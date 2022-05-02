@@ -1,0 +1,17 @@
+{
+    "sqltools.connections": [
+        {
+            "mysqlOptions": {
+                "authProtocol": "default"
+            },
+            "previewLimit": 50,
+            "server": "ls-7f1435e2ded91dacd203c6b9ccd08d46577baba1.cadoav7mk1ht.ap-southeast-1.rds.amazonaws.com",
+            "port": 3306,
+            "driver": "MySQL",
+            "name": "crowdfunding",
+            "database": "rizky_crowdfunsing",
+            "username": "kodingworks",
+            "password": "4]Ow8tb%?sRt,qZxFtr>n+6cg^3&ar|4"
+        }
+    ]
+}
