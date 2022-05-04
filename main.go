@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -37,8 +36,6 @@ func main() {
 	if err != nil {
 		log.Fatal(err.Error())
 	}
-
-	fmt.Println("connection to database is good")
 
 	userRepository := user.NewRepository(db)
 	userService := user.NewService(userRepository)
