@@ -152,7 +152,9 @@ func (h *userHandler) UploadAvatar(c *gin.Context) {
 		return
 	}
 
-	userID := 1
+	currentUser := c.MustGet("current_user").(user.User)
+	userID := currentUser.ID
+
 	path := "images/" + strconv.Itoa(userID) + "-" + file.Filename
 	if err := c.SaveUploadedFile(file, path); err != nil {
 		data := gin.H{"is_uploaded": false}
