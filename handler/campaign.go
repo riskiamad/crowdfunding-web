@@ -9,12 +9,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// catch parameter from handler
-// handler --> service
-// service choose which repository will call
-// repository : FindAll, FindByUserID
-// db
-
 type campaignHandler struct {
 	service campaign.Service
 }
@@ -24,6 +18,12 @@ func NewCampaignHandler(service campaign.Service) *campaignHandler {
 }
 
 func (h *campaignHandler) GetCampaigns(c *gin.Context) {
+	// catch parameter from handler
+	// handler --> service
+	// service choose which repository will call
+	// repository : FindAll, FindByUserID
+	// db
+
 	userID, _ := strconv.Atoi(c.Query("user_id"))
 
 	campaigns, err := h.service.GetCampaigns(userID)
@@ -34,5 +34,29 @@ func (h *campaignHandler) GetCampaigns(c *gin.Context) {
 	}
 
 	response := helper.APIResponse("List of campaigns", http.StatusOK, "success", campaign.FormatCampaigns(campaigns))
+	c.JSON(http.StatusOK, response)
+}
+
+func (h *campaignHandler) GetCampaign(c *gin.Context) {
+	// handler : mapping ID from URL to struct input, call formatter to formatting data
+	// service : need struct input to catch parameter ID
+	// repository : get campaign by ID
+
+	var input campaign.GetCampaignDetailInput
+
+	if err := c.ShouldBindUri(input); err != nil {
+		response := helper.APIResponse("Failed to get detail of campaign", http.StatusBadRequest, "error", nil)
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	campaignDetail, err := h.service.GetCampaign(input)
+	if err != nil {
+		response := helper.APIResponse("Failed to get detail of campaign", http.StatusBadRequest, "error", nil)
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	response := helper.APIResponse("Campaign detail", http.StatusOK, "success", campaign.FormatCampaignDetail(campaignDetail))
 	c.JSON(http.StatusOK, response)
 }
